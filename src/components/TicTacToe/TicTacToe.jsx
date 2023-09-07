@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Board } from './components';
 import './TicTacToe.css';
 
 export const TicTacToe = () => {
   const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [sorted, setSorted] = useState(false);
   const [currentMove, setCurrentMove] = useState(0);
-  const [moves, setMoves] = useState([]);
-  const xIsNext = currentMove % 2 == 0;
+  const [sorted, setSorted] = useState(false);
+  const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
   const handlePlay = (nextSquares) => {
@@ -21,15 +20,7 @@ export const TicTacToe = () => {
   };
 
   const renderMoves = () => {
-    return moves.map((description, move) => (
-      <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>;
-      </li>
-    ));
-  };
-
-  useEffect(() => {
-    const newMoves = history.map((squares, move) => {
+    let moves = history.map((_, move) => {
       let description;
 
       if (move > 0) {
@@ -38,37 +29,30 @@ export const TicTacToe = () => {
         description = 'Go to game start';
       }
 
-      return description;
+      return (
+        <li key={move}>
+          <button onClick={() => jumpTo(move)}>{description}</button>
+        </li>
+      );
     });
 
-    setMoves(newMoves);
-  }, [history]);
-
-  useEffect(() => {
-    const sortedMoves = moves.reverse();
-
-    setMoves(sortedMoves);
-  }, [sorted]);
-
-  const handleSort = () => {
-    setSorted((prevSorted) => !prevSorted);
-    // setHistory((prevHistory) => prevHistory.reverse());
+    return sorted ? moves.reverse() : moves;
   };
+
+  const handleSort = () => setSorted((prevSorted) => !prevSorted);
 
   return (
     <div className="game">
       <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+        <Board xIsNext={xIsNext} squares={currentSquares} lastMove={currentMove + 1 === history.length} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>
-          <p className="curentMove">You are at move # {currentMove}</p>
-          {renderMoves()}
-        </ol>
+        <p>You are at move: #{currentMove}</p>
+        <ol>{renderMoves()}</ol>
       </div>
-      <div className="game-button">
-        <button onClick={handleSort}>Sort by: {sorted ? 'Ascending' : 'Descending'}</button>
-      </div>
+      <button className="sort-btn" onClick={handleSort}>
+        Sort by {sorted ? 'Ascending' : 'Descending'}
+      </button>
     </div>
   );
 };

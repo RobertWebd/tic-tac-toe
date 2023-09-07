@@ -1,11 +1,22 @@
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Square } from '../Square';
 import { calculateWinner, getArray } from './Board.utils';
-import PropTypes from 'prop-types';
 import './Board.css';
 
+export const Board = ({ xIsNext, squares, lastMove, onPlay }) => {
+  const [lines, setLines] = useState([]);
+  const [gameEnd, setGameEnd] = useState(false);
 
+  const winnerStatus = calculateWinner(squares);
 
-export const Board = ({ xIsNext, squares, onPlay }) => {
+  useEffect(() => {
+    if (winnerStatus && winnerStatus.winner && !gameEnd) {
+      setLines(winnerStatus.lines);
+      setGameEnd(true);
+    }
+  }, [winnerStatus]);
+
   const handleClick = (i) => {
     if (calculateWinner(squares) || squares[i]) return;
 
@@ -21,21 +32,30 @@ export const Board = ({ xIsNext, squares, onPlay }) => {
   };
 
   const getStatus = () => {
-    const winner = calculateWinner(squares);
+    if (winnerStatus && winnerStatus.winner) {
+      return 'Winner: ' + winnerStatus.winner;
+    }
 
-    if (winner) {
-      return 'Winner: ' + winner;
+    if (!winnerStatus && squares.every(Boolean)) {
+      return 'Draw!';
     }
 
     return 'Next player: ' + (xIsNext ? 'X' : 'O');
   };
 
   const renderBoard = () => {
-    return getArray(3).map((_, rowIndex) => {
-      const cols = getArray(3).map((item, colIndex) => {
+    return getArray(3).map((row, rowIndex) => {
+      const cols = getArray(3).map((col, colIndex) => {
         const index = rowIndex * 3 + colIndex;
 
-        return <Square key={index} value={squares[index]} onSquareClick={() => handleClick(index)} />;
+        return (
+          <Square
+            key={index}
+            value={squares[index]}
+            highlighted={lines.includes(index) && lastMove}
+            onSquareClick={() => handleClick(index)}
+          />
+        );
       });
 
       return (
@@ -49,7 +69,7 @@ export const Board = ({ xIsNext, squares, onPlay }) => {
   return (
     <div>
       <div className="status">{getStatus()}</div>
-      {renderBoard()}
+      <div className="board">{renderBoard()}</div>
     </div>
   );
 };
@@ -57,5 +77,6 @@ export const Board = ({ xIsNext, squares, onPlay }) => {
 Board.propTypes = {
   xIsNext: PropTypes.bool,
   squares: PropTypes.array,
+  lastMove: PropTypes.bool,
   onPlay: PropTypes.func,
 };

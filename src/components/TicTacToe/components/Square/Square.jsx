@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import './Square.css';
 
-export const Square = ({ value, onSquareClick }) => {
+export const Square = ({ value, highlighted, onSquareClick }) => {
   return (
-    <button className="square" onClick={onSquareClick}>
+    <button className={`square ${highlighted ? 'highlighted' : ''}`} onClick={onSquareClick}>
       {value}
     </button>
   );
@@ -11,5 +11,6 @@ export const Square = ({ value, onSquareClick }) => {
 
 Square.propTypes = {
   value: PropTypes.string,
-  onSquareClick: PropTypes.func
+  highlighted: PropTypes.bool,
+  onSquareClick: PropTypes.func,
 };
