@@ -1,12 +1,9 @@
 {
-  "homepage": "https://RobertWebd.github.io/tic-tac-toe/",
   "name": "first-react-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predeploy":"npm run build",
-    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
