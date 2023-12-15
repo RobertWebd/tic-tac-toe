@@ -15,7 +15,7 @@
 }
 
 .game-info button {
-  transition: .2s;
+  transition: 0.2s;
   margin: 5px;
   padding: 10px;
   font-size: 20px;
@@ -37,6 +37,7 @@
 
 .sort-btn {
   height: 50px;
+  width: 197px;
   border-radius: 15px;
   padding: 10px;
   font-size: 20px;
