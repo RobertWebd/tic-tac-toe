@@ -4,11 +4,11 @@ import { Square } from '../Square';
 import { calculateWinner, getArray } from './Board.utils';
 import './Board.css';
 
-export const Board = ({ xIsNext, squares, lastMove, onPlay }) => {
+export const Board = ({ xIsNext, squares, lastMove, onPlay, setCurrentMove, setHistory }) => {
   const [lines, setLines] = useState([]);
   const [gameEnd, setGameEnd] = useState(false);
 
-  const winnerStatus = calculateWinner(squares);
+  let winnerStatus = calculateWinner(squares);
 
   useEffect(() => {
     if (winnerStatus && winnerStatus.winner && !gameEnd) {
@@ -18,6 +18,8 @@ export const Board = ({ xIsNext, squares, lastMove, onPlay }) => {
   }, [winnerStatus]);
 
   const handleClick = (i) => {
+    if (gameEnd) return;
+
     if (calculateWinner(squares) || squares[i]) return;
 
     const nextSquares = squares.slice();
@@ -66,10 +68,20 @@ export const Board = ({ xIsNext, squares, lastMove, onPlay }) => {
     });
   };
 
+  const handleNewGame = () => {
+    setCurrentMove(0);
+    setHistory([Array(9).fill(null)]);
+    setGameEnd(false);
+    setLines([]);
+  };
+
   return (
-    <div>
+    <div className="leftsideWrapper">
       <div className="status">{getStatus()}</div>
       <div className="board">{renderBoard()}</div>
+      <button className="newGame" onClick={handleNewGame}>
+        new Game
+      </button>
     </div>
   );
 };
@@ -79,4 +91,6 @@ Board.propTypes = {
   squares: PropTypes.array,
   lastMove: PropTypes.bool,
   onPlay: PropTypes.func,
+  setCurrentMove: PropTypes.func,
+  setHistory: PropTypes.func,
 };

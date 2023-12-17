@@ -1,3 +1,9 @@
+.leftsideWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .board {
   display: flex;
   flex-direction: column;
@@ -13,11 +19,17 @@
 
 .board-row {
   display: flex;
-  background-color: #1C1E22;
+  background-color: #1c1e22;
 }
 
 .board-row:after {
   clear: both;
   content: '';
   display: table;
+}
+
+.newGame {
+  display: flex;
+  align-self: center;
+  width: fit-content;
 }

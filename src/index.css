@@ -46,10 +46,19 @@ body {
 }
 
 button {
+  transition: 0.2s;
+  margin: 5px;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 5px;
+  background-color: #373941;
+  color: white;
+  border: 1px solid #636468;
+}
+
+button:hover {
   cursor: pointer;
-  background-color: rgba(76, 0, 255, 0.321);
-  padding: 3px;
-  border: 1px rgba(255, 0, 251, 0.467) solid;
+  opacity: 0.7;
 }
 
 #root {

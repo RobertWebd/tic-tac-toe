@@ -44,7 +44,14 @@ export const TicTacToe = () => {
   return (
     <div className="game">
       <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} lastMove={currentMove + 1 === history.length} onPlay={handlePlay} />
+        <Board
+          xIsNext={xIsNext}
+          squares={currentSquares}
+          lastMove={currentMove + 1 === history.length}
+          onPlay={handlePlay}
+          setCurrentMove={setCurrentMove}
+          setHistory={setHistory}
+        />
       </div>
       <div className="game-info">
         <p>You are at move: #{currentMove}</p>
