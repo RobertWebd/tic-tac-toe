@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Square } from '../Square';
 import { calculateWinner, getArray } from './Board.utils';
@@ -7,6 +7,7 @@ import './Board.css';
 export const Board = ({ xIsNext, squares, lastMove, onPlay, setCurrentMove, setHistory }) => {
   const [lines, setLines] = useState([]);
   const [gameEnd, setGameEnd] = useState(false);
+  const result = useRef('');
 
   let winnerStatus = calculateWinner(squares);
 
@@ -34,11 +35,15 @@ export const Board = ({ xIsNext, squares, lastMove, onPlay, setCurrentMove, setH
   };
 
   const getStatus = () => {
+    if (gameEnd) return result.current;
+
     if (winnerStatus && winnerStatus.winner) {
+      result.current = 'Winner: ' + winnerStatus.winner;
       return 'Winner: ' + winnerStatus.winner;
     }
 
     if (!winnerStatus && squares.every(Boolean)) {
+      result.current = 'Draw';
       return 'Draw!';
     }
 
